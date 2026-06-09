@@ -28,5 +28,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
+        return redirect()->route('verification.notice')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico para activar tu cuenta.');
+
     }
 }

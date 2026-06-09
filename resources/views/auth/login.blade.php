@@ -4,7 +4,11 @@
     Iniciar Sesión
 @endsection
 @section('auth-content')
-<form class="mt-14 space-y-5" novalidate>
+
+@if(session('error'))
+    <x-alert type="error" :message="session('error')" />
+@endif
+<form class="mt-14 space-y-5" method="POST" action="{{route('login.store')}}" novalidate>
     <div class="flex flex-col gap-2">
         <label class="font-bold text-2xl" for="email">Email</label>
 
@@ -17,6 +21,10 @@
             tabindex="1"
         />
     </div>
+
+    <x-input-error field="email" />
+
+    <x-input-error field="name" />
 
     <div class="flex flex-col gap-2">
         <div class="flex  items-center justify-between">
@@ -31,6 +39,8 @@
             tabindex="2"
         />
     </div>
+
+     <x-input-error field="password" />
     <input
         type="submit"
         value='Iniciar Sesión'
