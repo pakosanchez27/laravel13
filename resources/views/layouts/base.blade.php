@@ -13,6 +13,9 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+
 </head>
 
 <body>
@@ -25,6 +28,7 @@
             <nav class="flex flex-col lg:flex-row items-center gap-4">
                 @auth
                     <p class="text-white font-bold text-xl">Hola: {{ Auth::user()->name }}</p>
+                    <x-dropdown-menu />
                 @else
                     @if (Route::has('login'))
                         <a href="{{ route('login') }}"
@@ -40,8 +44,7 @@
     </header>
 
 
-    @yield('content')
-
+    @yield('contents')
 </body>
 
 </html>

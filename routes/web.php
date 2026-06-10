@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\LogoutController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 
 
@@ -19,6 +23,8 @@ Route::post('/auth/register', [RegisterController::class, 'store'])->name('regis
 
 Route::get('/auth/login', [LoginController::class, 'index'])->name('login');
 Route::post('/auth/login', [LoginController::class, 'store'])->name('login.store');
+
+Route::post('/auth/logout', [LogoutController::class, 'store'])->name('logout.store');
 
 
 //Ruta para verificar el correo electrónico
@@ -40,6 +46,5 @@ Route::post('/email/verification-notification',  function (Request $request){
     return back()->with('success', 'Se ha enviado un nuevo correo de verificación a tu dirección de correo electrónico.');
 })->middleware('auth', 'throttle:1,1')->name('verification.send');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Mostrar todos los presupuestos
+Route::get('/dashboard', [BudgetController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('content')
+@section('contents')
 
 
 <main class="max-w-2xl mt-10 mx-auto p-10 shadow-lg">
