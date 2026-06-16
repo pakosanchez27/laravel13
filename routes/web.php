@@ -33,18 +33,22 @@ Route::get('email/verify/{id}/{hash}', function (EmailVerificationRequest $reque
     $request->fulfill();
 
     return redirect('dashboard')->with('success', 'Tu correo fue verificado correctamente. Ya puedes crear presupuestos y gastos');
-
 })->middleware('auth', 'signed')->name('verification.verify');
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
-Route::post('/email/verification-notification',  function (Request $request){
+Route::post('/email/verification-notification',  function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
 
     return back()->with('success', 'Se ha enviado un nuevo correo de verificación a tu dirección de correo electrónico.');
 })->middleware('auth', 'throttle:1,1')->name('verification.send');
 
-// Mostrar todos los presupuestos
-Route::get('/dashboard', [BudgetController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix('dashboard')->group(function () {
+    // Mostrar todos los presupuestos
+    Route::get('/', [BudgetController::class, 'index'])->name('dashboard');
+    Route::get('/budgets/create', [BudgetController::class, 'create'])->name('budgets.create');
+    Route::post('/budgets', [BudgetController::class, 'store'])->name('budgets.store');
+});
