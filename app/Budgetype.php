@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App; 
 
 enum Budgetype : string
 {
     case General = 'general';
-    case Yearly = 'goal';
+    case Goal = 'goal';
 }
