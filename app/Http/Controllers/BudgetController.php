@@ -56,17 +56,24 @@ class BudgetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+     #[Authorize('update', 'budget')]
     public function edit(Budget $budget)
     {
-        //
+        return view('budgets.edit',[
+            'budget' => $budget
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Budget $budget)
+    #[Authorize('update', 'budget')]
+    public function update(BudgetRequest $request, Budget $budget)
     {
-        //
+       $budget->update($request->validated());
+
+        return redirect()->route('dashboard')->with('success', 'Presupuesto Actualizado exitosamente');
+
     }
 
     /**
