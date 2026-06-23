@@ -46,13 +46,19 @@
                                   ">{{ $budget->isGeneral() ? 'General' : 'Objetivo' }}</p>
                                   <a
                                       class="text-2xl font-bold text-gray-500 block"
-                                      href=""
+                                      href="{{route('budgets.show', $budget)}}"
                                   >{{ $budget->name }}</a>
                                   <p class="text-lg text-gray-500">${{ $budget->amount}}</p>
                               </td>
                               <td class="py-6 px-10 flex justify-end gap-3">
                                 <x-budget-dropdown
                                 :budget="$budget"
+                                />
+                                <x-confirm-delete
+                                    :id="'delete-dialog-' . $budget->id"
+                                    :title="'Elimiar Presupuesto: ' . $budget->name "
+                                    message="Esta acción no se puede deshacer"
+                                    :action="route('budgets.destroy', $budget)"
                                 />
                               </td>
                           </tr>

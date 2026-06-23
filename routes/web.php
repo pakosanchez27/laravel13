@@ -51,6 +51,8 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/', [BudgetController::class, 'index'])->name('dashboard');
     Route::get('/budgets/create', [BudgetController::class, 'create'])->name('budgets.create');
     Route::post('/budgets', [BudgetController::class, 'store'])->name('budgets.store');
+    Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
     Route::get('/budget/{budget}/edit', [BudgetController::class, 'edit'])->name('budgets.edit');
     Route::put('/budget/{budget}', [BudgetController::class, 'update'])->name('budgets.update');
+    Route::delete('/budget/{budget}', [BudgetController::class, 'destroy'])->name('budgets.destroy');
 });

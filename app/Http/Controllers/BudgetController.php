@@ -8,6 +8,7 @@ use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 
 #[Middleware('auth')]
@@ -21,7 +22,7 @@ class BudgetController extends Controller
     {
         $budgets = Auth::user()->budgets()->get();
 
-        return view('dashboard',[
+        return view('dashboard', [
             'budgets' => $budgets
         ]);
     }
@@ -49,17 +50,20 @@ class BudgetController extends Controller
      * Display the specified resource.
      */
     public function show(Budget $budget)
-    {
-        //
+    {   
+    
+        return Inertia::render('Budgets/Show', [
+            'budget' => $budget
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-     #[Authorize('update', 'budget')]
+    #[Authorize('update', 'budget')]
     public function edit(Budget $budget)
     {
-        return view('budgets.edit',[
+        return view('budgets.edit', [
             'budget' => $budget
         ]);
     }
@@ -70,17 +74,18 @@ class BudgetController extends Controller
     #[Authorize('update', 'budget')]
     public function update(BudgetRequest $request, Budget $budget)
     {
-       $budget->update($request->validated());
+        $budget->update($request->validated());
 
         return redirect()->route('dashboard')->with('success', 'Presupuesto Actualizado exitosamente');
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    #[Authorize('delete', 'budget')]
     public function destroy(Budget $budget)
     {
-        //
+        $budget->delete();
+        return redirect()->route('dashboard')->with('success', 'Presupuesto Eliminado exitosamente');
     }
 }

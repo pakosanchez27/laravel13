@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\Response;
 
 class BudgetPolicy
 {
-  
+
     /**
      * Determine whether the user can view the model.
      */
@@ -17,12 +17,12 @@ class BudgetPolicy
         return false;
     }
 
-  
+
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Budget $budget): bool
+    public function update(User $user, Budget $budget): Response
     {
         return $user->id === $budget->user_id ? Response::allow : Response::deny('No tienes permisos para editar este presupuesto');
     }
@@ -30,10 +30,10 @@ class BudgetPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Budget $budget): bool
+    public function delete(User $user, Budget $budget): Response
     {
-        return false;
+         return $user->id === $budget->user_id ? Response::allow : Response::deny('No tienes permisos para eliminar este presupuesto');
     }
 
-   
+
 }
