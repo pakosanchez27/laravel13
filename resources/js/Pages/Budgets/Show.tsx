@@ -1,5 +1,8 @@
 import { Head } from "@inertiajs/react";
 import { Budget } from "@/types/budget";
+import AmountDisplay from "@/components/AmountDisplay";
+import ExpenseModal from "@/components/ExpenseModal";
+import { useExpenseModalStore } from "@/store/expense-modal-store";
 
 type Props = {
     budget: Budget
@@ -7,6 +10,8 @@ type Props = {
 
 
 export default function Show({ budget }: Props) {
+
+    const openCreateModal = useExpenseModalStore((state) => state.openCreateModal)
 
     return (
         <>
@@ -26,9 +31,30 @@ export default function Show({ budget }: Props) {
             <main className='grid grid-cols-1 md:grid-cols-2 items-center gap-20 mt-10'>
                 {/* Grafica */}
                 <div className='space-y-5'>
-
+                <AmountDisplay label="Presupuesto" amount={+budget.amount} />
+                <AmountDisplay label="Gastado" amount={0} />
+                <AmountDisplay label="Restante" amount={0} />
                 </div>
             </main>
+
+            <section className="p-10 lg:px-5 shadow-lg mt-10">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold">
+
+                    </h2>
+
+                    <button
+                    className="bg-purple-950 hover:bg-purple-800 px-5 py-2 my-5 rounded-lg text-white font-bold text-xl cursor-pointer"
+                    onClick={openCreateModal}
+                    >
+                        Nuevo Gasto
+                    </button>
+                </div>
+
+            </section>
+
+
+        <ExpenseModal />
         </>
     )
 }

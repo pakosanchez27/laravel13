@@ -16,10 +16,14 @@ class Budget extends Model
         'type' => Budgetype::class,
     ];
 
-        public function user()
-        {
-            return $this->belongsTo(User::class);
-        }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
 
     public function isGeneral(): bool
     {
