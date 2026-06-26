@@ -14,7 +14,7 @@ class BudgetPolicy
      */
     public function view(User $user, Budget $budget): Response
     {
-        return $user->id === $budget->user_id ? Response::allow : Response::deny('No tienes permisos para ver este presupuesto');
+        return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permisos para ver este presupuesto');
     }
 
 
@@ -24,7 +24,7 @@ class BudgetPolicy
      */
     public function update(User $user, Budget $budget): Response
     {
-        return $user->id === $budget->user_id ? Response::allow : Response::deny('No tienes permisos para editar este presupuesto');
+        return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permisos para editar este presupuesto');
     }
 
     /**
@@ -32,7 +32,7 @@ class BudgetPolicy
      */
     public function delete(User $user, Budget $budget): Response
     {
-         return $user->id === $budget->user_id ? Response::allow : Response::deny('No tienes permisos para eliminar este presupuesto');
+         return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permisos para eliminar este presupuesto');
     }
 
 

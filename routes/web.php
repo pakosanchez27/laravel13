@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -55,4 +56,5 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/budget/{budget}/edit', [BudgetController::class, 'edit'])->name('budgets.edit');
     Route::put('/budget/{budget}', [BudgetController::class, 'update'])->name('budgets.update');
     Route::delete('/budget/{budget}', [BudgetController::class, 'destroy'])->name('budgets.destroy');
+    Route::post('/budgets/{budget}/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
 });
