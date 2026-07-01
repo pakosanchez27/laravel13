@@ -7,4 +7,5 @@ export type Budget = {
     amount: string
     type: BudgetType
     create_at: string
+    expenses : Expense[]
 }

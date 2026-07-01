@@ -6,6 +6,7 @@ use App\ExpenseCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,7 @@ class BudgetController extends Controller
 
         $budget = Auth::user()->budgets()->create($request->validated());
 
+
         return redirect()->route('dashboard')->with('success', 'Presupuesto creado exitosamente');
     }
 
@@ -55,6 +57,16 @@ class BudgetController extends Controller
     public function show(Budget $budget)
     {
 
+        // $expenses = Expense::where('budget_id', $budget->id)->latest()->get();
+        // $expenses = $budget->expenses()->get();
+
+        $budget->load([
+            'expenses' => function ($query) {
+                $query->latest();
+            }
+        ]);
+
+        $total = $budget->expenses->sum('amount');
 
         return Inertia::render('Budgets/Show', [
             'budget' => $budget,
