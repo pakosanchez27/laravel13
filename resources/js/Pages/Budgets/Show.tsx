@@ -10,6 +10,8 @@ import { Category } from "@/types/Category";
 import { formatDate } from "@/utils";
 import ProgressBar from "@/components/ProgressBar";
 import ExpenseDropdown from "@/components/ExpenseDropdown";
+import DeleteExpenseModal from "@/components/DeleteExpenseModal";
+import CashTrackrAgent from "@/components/CashTrackrAgent";
 
 type Props = {
     budget: Budget
@@ -30,8 +32,7 @@ export default function Show({ budget, categories, spent }: Props) {
     }, [flash]);
 
     const openCreateModal = useExpenseModalStore((state) => state.openCreateModal)
-    useExpenseModalStore.getState().setBudget(budget)
-    useExpenseModalStore.getState().setCategories(categories);
+
     const porcentageUsed = +((parseFloat(spent) / parseFloat(budget.amount)) * 100).toFixed(2)
     const remaining = parseFloat(budget.amount) - parseFloat(spent);
 
@@ -45,6 +46,11 @@ export default function Show({ budget, categories, spent }: Props) {
         return () => clearTimeout(timeout);
     }, [porcentageUsed]);
 
+
+    useEffect(() => {
+        useExpenseModalStore.getState().setBudget(budget)
+        useExpenseModalStore.getState().setCategories(categories);
+    }, [budget, categories]);
 
     return (
         <>
@@ -103,7 +109,7 @@ export default function Show({ budget, categories, spent }: Props) {
 
                                         {budget.expenses.map(expense => (
                                             <tr key={expense.id} className='flex justify-between items-center '>
-                                                <td className={` ${budget.type === 'general' ? 'pt-10' : 'pt-5'} pb-5 px-10 relative`}>
+                                                <td className={` ${budget.type === 'general' ? 'pt-15' : 'pt-5'} pb-5 px-10 relative`}>
                                                     {budget.type === 'general' && (
                                                         <p className={`absolute top-0 left-0 inline-block px-3 py-1 rounded-br-2xl text-sm font-medium w-40 ${expense.category_color}`}>
                                                             {expense.category_label}
@@ -141,9 +147,10 @@ export default function Show({ budget, categories, spent }: Props) {
 
             </section>
 
-
+            <CashTrackrAgent budgetId={budget.id} />
 
             <ExpenseModal />
+            <DeleteExpenseModal />
 
             <ToastContainer />
         </>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
 use App\Models\Expense;
+use Illuminate\Foundation\Attributes\Authorize;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,7 @@ class BudgetController extends Controller
         $budget = Auth::user()->budgets()->create($request->validated());
 
 
-        return redirect()->route('dashboard')->with('success', 'Presupuesto creado exitosamente');
+        return redirect()->route('budgets.show', $budget)->with('success', 'Presupuesto creado exitosamente');
     }
 
     /**
@@ -70,8 +71,8 @@ class BudgetController extends Controller
 
         return Inertia::render('Budgets/Show', [
             'budget' => $budget,
-            'spent' =>$spent,
-            'categories' => collect(ExpenseCategory::cases())->map(fn ($category) => [
+            'spent' => $spent,
+            'categories' => collect(ExpenseCategory::cases())->map(fn($category) => [
                 'value' => $category->value,
                 'label' => $category->label(),
 
@@ -98,7 +99,7 @@ class BudgetController extends Controller
     {
         $budget->update($request->validated());
 
-        return redirect()->route('dashboard')->with('success', 'Presupuesto Actualizado exitosamente');
+        return redirect()->route('budgets.show', $budget)->with('success', 'Presupuesto Actualizado exitosamente');
     }
 
     /**
@@ -107,7 +108,7 @@ class BudgetController extends Controller
     #[Authorize('delete', 'budget')]
     public function destroy(Budget $budget)
     {
-        $budget->delete();
+        Budget::delete($budget->id);
         return redirect()->route('dashboard')->with('success', 'Presupuesto Eliminado exitosamente');
     }
 }
