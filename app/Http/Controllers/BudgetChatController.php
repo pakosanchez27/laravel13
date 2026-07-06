@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Budget;
+use App\Ai\Agents\BudgetAssistant;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 
 #[Middleware('auth')]
@@ -30,5 +31,16 @@ class BudgetChatController extends Controller
         } else {
             $agent->budgetContext = "Este presupuesto es de tipo General llamado '{$budget->name}' con un monto total de \${$budget->amount}. Los gastos tienen nombre, monto y categoría.";
         }
+
+        return $agent
+            ->stream(
+                $prompt,
+                provider: 'openrouter',
+                model: 'poolside/laguna-xs-2.1:free',
+                // model: 'google/gemma-4-26b-a4b-it:free',
+                // model: 'qwen/qwen3-coder:free',
+            )->usingVercelDataProtocol();
+
+
     }
 }

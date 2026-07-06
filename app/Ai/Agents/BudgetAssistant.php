@@ -2,6 +2,8 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\Tools\SearchExpenses;
+use App\Ai\Tools\AddExpense;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
@@ -51,6 +53,9 @@ PROMPT;
 
     public function tools(): iterable
     {
-        return [];
+        return [
+            new SearchExpenses($this->budgetId),
+            new AddExpense($this->budgetId, $this->hasCategories),
+        ];
     }
 }
